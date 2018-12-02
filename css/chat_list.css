@@ -121,7 +121,6 @@ input {
 .msgright {
     float: right;
     text-align: right;
-    /* display: flex; */
 }
 .chatright .footer {
     height: 25%;
@@ -146,8 +145,3 @@ input {
     justify-content: space-around;
 }
 
-
-.msg__list_headpic{
-    border-radius: 20px; 
-    vertical-align: top;
-}

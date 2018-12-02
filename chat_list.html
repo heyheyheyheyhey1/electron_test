@@ -34,7 +34,6 @@
             <div class="chatleft">
 
                 <div class="top">
-                    <img style="border-radius: 20px; vertical-align: middle;" src="http://placehold.it/40x40">
                     <span style="padding-left: 10px">weocome </span>
                 </div>
 
@@ -72,12 +71,11 @@
             <div class="chatright">
 
                 <div class="top">
-                    <img style="border-radius: 20px; vertical-align: middle;" src="http://placehold.it/40x40">
-                    <span style="margin-left: 20px;">Barack Obama</span>
-                    <i class="fas fa-ellipsis-v" style="font-size: 1.4em; position: absolute; right: 20px; color: gray;"></i>
+                    <h4 style="margin-left: 20px;" id="chating_">Barack Obama</h4>
+                    <!-- <i class="fas fa-ellipsis-v" style="font-size: 1.4em; position: absolute; right: 20px; color: gray;"></i> -->
                 </div>
 
-                <div class="center">
+                <div class="center" id="rightCenter">
                     <ul id="msg_list">
                         <li class="msgleft">
                             <div>
@@ -102,7 +100,7 @@
                             <p class="msgcard">This is a long message! This is a long message! This is a long left
                                 message!</p>
                         </li>
-                 
+
                         <li class="msgleft">
                             <p class="msgcard">This is a long message! <img src="assets/emoji/0.gif"> This is a long
                                 message! This is a long left
@@ -152,45 +150,58 @@
                 }
             }
         }
-        function parseMsgToItem(msg){
-            console.log("parsing ",msg)
-            msgJSON=JSON.parse(msg)
-            el_li=document.createElement('li')
-            el_p=document.createElement('p')
-            if (msg.senderId!=myid){
-                document.getElementById("msg_list")
-            }else{
+        function parseMsgToItem(msg) {
+            console.log("parsing ", msg)
+            let obj=JSON.parse(JSON.parse(msg))
 
+
+            el_li = document.createElement('li')
+            el_p = document.createElement('p')
+            
+            el_p.classList.add("msgcard")
+            el_p.innerHTML=obj.data
+            console.log(obj,typeof(obj))
+            if (obj.senderId != myid) {
+                el_li.classList.add("msgleft")
+
+            } else {
+                el_li.classList.add("msgright")
             }
-        }
-        leftBottomPanels[0].classList.add("active")
-        
-        
-        
-        //发送按钮事件
-        document.getElementById('btnSendMessage').onclick=function(){
-            let msg_area=document.getElementById('msg_area')
-            console.log(msg_area.value)
-            ws.send(msg_area.value)
-            msg_area.value=""
-        }
-        
-        
-        
-        //websocket处理部分
-        let ws=new WebSocket("ws://127.0.0.1:66")
-        let myid=parseInt(Math.random()*100)
-        console.log("generate id : ",myid)
-        ws.onmessage=function(msg){
-            console.log("receive",msg.data)
-            parseMsgToItem(JSON.stringify({
-                senderId:myid,
-                msg:msg.data
-            }))
+
+            el_li.appendChild(el_p)
+            document.getElementById("msg_list").appendChild(el_li)
+            document.getElementById("rightCenter").scrollTop =document.getElementById("rightCenter").scrollHeight;
         }
 
-        
-        
+        leftBottomPanels[0].classList.add("active")
+
+
+
+        //发送按钮事件
+        document.getElementById('btnSendMessage').onclick = function () {
+            let msg_text = document.getElementById('msg_area')
+            console.log("sending ",msg_text.value)
+            let sendObj={
+                data:msg_text.value,
+                senderId:myid
+            }
+            ws.send(JSON.stringify(sendObj))
+            msg_area.value = ""
+        }
+
+
+
+        //websocket处理部分
+        let ws = new WebSocket("ws://127.0.0.1:66")
+        let myid = parseInt(Math.random() * 100)
+        console.log("generate id : ", myid)
+        ws.onmessage = function (msg) {
+            console.log("receive", msg.data)
+            parseMsgToItem(JSON.stringify(msg.data))
+        }
+
+
+
     </script>
 
 
