@@ -39,7 +39,7 @@
                 </div>
 
                 <div class="center">
-                    <ul id="msg_list" class="list-group">
+                    <ul id="chatting_list" class="list-group">
                         <a class="list-group-item " href="#">
 
                             <img src="http://placehold.it/40x40">
@@ -81,51 +81,38 @@
                 </div>
 
                 <div class="center">
-                    <ul>
+                    <ul id="msg_list">
                         <li class="msgleft">
                             <div>
-                                <img style="border-radius: 20px; vertical-align: top;" src="http://placehold.it/40x40">
+                                <img style="border-radius: 20px; vertical-align: top;" src="http://placehold.it/40x40" class="msg__list_headpic">
                                 <p class="msgcard">This message on the left!</p>
                             </div>
                         </li>
+
                         <li class="msgright">
                             <p class="msgcard">This message on the right!</p>
-                            <img style="border-radius: 20px; vertical-align: top;" src="http://placehold.it/40x40">
+                            <img style="border-radius: 20px; vertical-align: top;" src="http://placehold.it/40x40" class="msg__list_headpic" >
 
                         </li>
                         <li class="msgleft">
-                            <img style="border-radius: 20px; vertical-align: top;" src="http://placehold.it/40x40">
+                            <img style="border-radius: 20px; vertical-align: top;" src="http://placehold.it/40x40" class="msg__list_headpic">
                             <p class="msgcard">This is a long message! This is a long message! This is a long left
                                 message!</p>
                         </li>
                         <li class="msgright">
 
                             <p class="msgcard">This message on the right!</p>
-                            <img style="border-radius: 20px; vertical-align: top;" src="http://placehold.it/40x40">
+                            <img style= src="http://placehold.it/40x40" class="msg__list_headpic">
 
                         </li>
                         <li class="msgleft">
-                            <img style="border-radius: 20px; vertical-align: top;" src="http://placehold.it/40x40">
+                            <img style="border-radius: 20px; vertical-align: top;" src="http://placehold.it/40x40" class="msg__list_headpic">
                             <p class="msgcard">This is a long message! This is a long message! This is a long left
                                 message!</p>
                         </li>
+                 
                         <li class="msgleft">
-                            <img style="border-radius: 20px; vertical-align: top;" src="http://placehold.it/40x40">
-                            <p class="msgcard">This is a long message! This is a long message! This is a long left
-                                message!</p>
-                        </li>
-                        <li class="msgleft">
-                            <img style="border-radius: 20px; vertical-align: top;" src="http://placehold.it/40x40">
-                            <p class="msgcard">This is a long message! This is a long message! This is a long left
-                                message!</p>
-                        </li>
-                        <li class="msgleft">
-                            <img style="border-radius: 20px; vertical-align: top;" src="http://placehold.it/40x40">
-                            <p class="msgcard">This is a long message! This is a long message! This is a long left
-                                message!</p>
-                        </li>
-                        <li class="msgleft">
-                            <img style="border-radius: 20px; vertical-align: top;" src="http://placehold.it/40x40">
+                            <img style="border-radius: 20px; vertical-align: top;" src="http://placehold.it/40x40" class="msg__list_headpic">
                             <p class="msgcard">This is a long message! <img src="assets/emoji/0.gif"> This is a long
                                 message! This is a long left
                                 message!</p>
@@ -136,7 +123,7 @@
                 <div class="footer">
                     <textarea maxlength="800" rows="5" cols="40" style="width: 100%; resize: none; border: none; "
                         placeholder="请在此输入要发送的内容..." id="msg_area"></textarea>
-                    <button class="sendbtn">发送</button>
+                    <button class="sendbtn" id="btnSendMessage">发送</button>
                 </div>
 
 
@@ -147,7 +134,7 @@
 
 
     <script>
-        //放入script/leftSelector.js
+        //ui处理部分
         let leftBottomPanels = document.getElementsByClassName("leftSelect")
         for (let i = 0; i < leftBottomPanels.length; i++) {
             leftBottomPanels[i].onclick = function () {
@@ -157,7 +144,7 @@
                 this.classList.add("active")
                 switch (this.id) {
                     case "msgPanel": {
-                        console.log(document.getElementById("msg_list").children)
+                        console.log(document.getElementById("chatting_list").children)
                         console.log("click panel id: ", this.id)
                         break
                     }
@@ -174,10 +161,46 @@
                 }
             }
         }
-        leftBottomPanels[0].classList.add("active")
-        // require('./script/leftSelector.js')()
-        let ws=new WebSocket("127.0.0.1:80")
+        function parseMsgToItem(msg){
+            console.log("parsing ",msg)
+            msgJSON=JSON.parse(msg)
+            el_li=document.createElement('li')
+            el_p=document.createElement('p')
+            el_img=document.createElement('img')
+            if (msg.senderId!=myid){
+                document.getElementById("msg_list")
+            }else{
 
+            }
+        }
+        leftBottomPanels[0].classList.add("active")
+        
+        
+        
+        //发送按钮事件
+        document.getElementById('btnSendMessage').onclick=function(){
+            let msg_area=document.getElementById('msg_area')
+            console.log(msg_area.value)
+            ws.send(msg_area.value)
+            msg_area.value=""
+        }
+        
+        
+        
+        //websocket处理部分
+        let ws=new WebSocket("ws://127.0.0.1:66")
+        let myid=parseInt(Math.random()*100)
+        console.log("generate id : ",myid)
+        ws.onmessage=function(msg){
+            console.log("receive",msg.data)
+            parseMsgToItem(JSON.stringify({
+                senderId:myid,
+                msg:msg.data
+            }))
+        }
+
+        
+        
     </script>
 
 

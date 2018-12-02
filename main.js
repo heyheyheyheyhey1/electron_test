@@ -1,11 +1,13 @@
 const { app, BrowserWindow } = require('electron')
 const ipc = require('electron').ipcMain
+const process = require('child_process')
+process.exec('node server.js')
 // 保持对window对象的全局引用，如果不这么做的话，当JavaScript对象被
 // 垃圾回收的时候，window对象将会自动的关闭
 let win_login
 let win_chat_list
 
-function createWindowLogin () {
+function createWindowLogin() {
   // 创建浏览器窗口。
   win_login = new BrowserWindow({ width: 1300, height: 860 })
   // 然后加载应用的 index.html。
@@ -25,7 +27,7 @@ function createWindowLogin () {
 // function createWindowChatList(){
 //   win_chat_list=new BrowserWindow({width:1200,height:860,show:false})
 //   win_chat_list.loadFile('chat_list.html')
-  
+
 // }
 
 
@@ -52,7 +54,7 @@ app.on('activate', () => {
   }
 })
 
-ipc.on('show_chat_list',()=>{
+ipc.on('show_chat_list', () => {
   // createWindowChatList()
   // win_chat_list.show()
   win_login.loadFile('chat_list.html')

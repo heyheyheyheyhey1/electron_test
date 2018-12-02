@@ -148,3 +148,11 @@ input {
     flex-direction: row;
     justify-content: space-around;
 }
+
+.msgleft{
+
+}
+.msg__list_headpic{
+    border-radius: 20px; 
+    vertical-align: top;
+}
