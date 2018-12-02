@@ -41,15 +41,12 @@
                 <div class="center">
                     <ul id="chatting_list" class="list-group">
                         <a class="list-group-item " href="#">
-
-                            <img src="http://placehold.it/40x40">
                             <span style="margin-left: 10px;">Barack Obama</span>
                             <span class="badge">1</span>
                         </a>
 
                         <a class="list-group-item" href="#">
 
-                            <img src="http://placehold.it/40x40">
                             <span style="margin-left: 10px;">Barack Obama</span>
 
                         </a>
@@ -84,35 +81,29 @@
                     <ul id="msg_list">
                         <li class="msgleft">
                             <div>
-                                <img style="border-radius: 20px; vertical-align: top;" src="http://placehold.it/40x40" class="msg__list_headpic">
                                 <p class="msgcard">This message on the left!</p>
                             </div>
                         </li>
 
                         <li class="msgright">
                             <p class="msgcard">This message on the right!</p>
-                            <img style="border-radius: 20px; vertical-align: top;" src="http://placehold.it/40x40" class="msg__list_headpic" >
 
                         </li>
                         <li class="msgleft">
-                            <img style="border-radius: 20px; vertical-align: top;" src="http://placehold.it/40x40" class="msg__list_headpic">
                             <p class="msgcard">This is a long message! This is a long message! This is a long left
                                 message!</p>
                         </li>
                         <li class="msgright">
 
                             <p class="msgcard">This message on the right!</p>
-                            <img style= src="http://placehold.it/40x40" class="msg__list_headpic">
 
                         </li>
                         <li class="msgleft">
-                            <img style="border-radius: 20px; vertical-align: top;" src="http://placehold.it/40x40" class="msg__list_headpic">
                             <p class="msgcard">This is a long message! This is a long message! This is a long left
                                 message!</p>
                         </li>
                  
                         <li class="msgleft">
-                            <img style="border-radius: 20px; vertical-align: top;" src="http://placehold.it/40x40" class="msg__list_headpic">
                             <p class="msgcard">This is a long message! <img src="assets/emoji/0.gif"> This is a long
                                 message! This is a long left
                                 message!</p>
@@ -166,7 +157,6 @@
             msgJSON=JSON.parse(msg)
             el_li=document.createElement('li')
             el_p=document.createElement('p')
-            el_img=document.createElement('img')
             if (msg.senderId!=myid){
                 document.getElementById("msg_list")
             }else{

@@ -78,13 +78,9 @@ input {
     margin: 10px;
     padding-left: 0px;
     width: 90%;
-    height: 15%
+    height: auto
 }
 
-.chatleft .center img{
-    border-radius: 20px;
-    vertical-align: middle;
-}
 
 .chatright {
     background-color: #ffffff;
@@ -125,6 +121,7 @@ input {
 .msgright {
     float: right;
     text-align: right;
+    /* display: flex; */
 }
 .chatright .footer {
     height: 25%;
@@ -149,9 +146,7 @@ input {
     justify-content: space-around;
 }
 
-.msgleft{
 
-}
 .msg__list_headpic{
     border-radius: 20px; 
     vertical-align: top;
