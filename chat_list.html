@@ -38,11 +38,11 @@
                     <span style="padding-left: 10px">weocome </span>
                 </div>
 
-                <div class="center" >
+                <div class="center">
                     <ul id="msg_list" class="list-group">
                         <a class="list-group-item " href="#">
 
-                            <img  src="http://placehold.it/40x40">
+                            <img src="http://placehold.it/40x40">
                             <span style="margin-left: 10px;">Barack Obama</span>
                             <span class="badge">1</span>
                         </a>
@@ -54,10 +54,10 @@
 
                         </a>
                         <a class="list-group-item" href="#">
-                            <span style="margin-left: 10px;">xxx申请好友</span> 
-                            <div class="requstButtons" >
-                                    <button class="btn btn-success">允许</button>
-                                    <button class="btn btn-danger">拒绝</button>
+                            <span style="margin-left: 10px;">xxx申请好友</span>
+                            <div class="requstButtons">
+                                <button class="btn btn-success">允许</button>
+                                <button class="btn btn-danger">拒绝</button>
                             </div>
                         </a>
                     </ul>
@@ -135,7 +135,7 @@
 
                 <div class="footer">
                     <textarea maxlength="800" rows="5" cols="40" style="width: 100%; resize: none; border: none; "
-                        placeholder="请在此输入要发送的内容..."></textarea>
+                        placeholder="请在此输入要发送的内容..." id="msg_area"></textarea>
                     <button class="sendbtn">发送</button>
                 </div>
 
@@ -162,7 +162,7 @@
                         break
                     }
                     case "friendPanel": {
-                        
+
                         console.log("click panel id: ", this.id)
                         break
                     }
@@ -176,9 +176,7 @@
         }
         leftBottomPanels[0].classList.add("active")
         // require('./script/leftSelector.js')()
-
-
-
+        let ws=new WebSocket("127.0.0.1:80")
 
     </script>
 
