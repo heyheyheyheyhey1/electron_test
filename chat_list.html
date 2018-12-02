@@ -1,0 +1,188 @@
+<html>
+
+<head>
+    <title>chat list</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="author" content="https://blog.csdn.net/q475254344">
+    <link href="css/chat_list.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
+        crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<script>
+    document.getElementsByTagName('body').height = window.innerHeight;
+</script>
+
+<body class="box">
+    <!-- <div class="leftbar">
+        <ul>
+            <li><i class="fas fa-user"></i></li>
+            <li><i class="fas fa-users"></i></li>
+            <li><i class="fas fa-smile"></i></li>
+            <li><i class="fas fa-envelope"></i></li>
+            <li><i class="fas fa-bell"></i></li>
+            <li><i class="fas fa-calendar-alt"></i></li>
+            <li><i class="fas fa-power-off"></i></li>
+        </ul>
+    </div> -->
+    <div class="container">
+        <div class="chatbox">
+
+            <div class="chatleft">
+
+                <div class="top">
+                    <img style="border-radius: 20px; vertical-align: middle;" src="http://placehold.it/40x40">
+                    <span style="padding-left: 10px">weocome </span>
+                </div>
+
+                <div class="center" >
+                    <ul id="msg_list" class="list-group">
+                        <a class="list-group-item " href="#">
+
+                            <img  src="http://placehold.it/40x40">
+                            <span style="margin-left: 10px;">Barack Obama</span>
+                            <span class="badge">1</span>
+                        </a>
+
+                        <a class="list-group-item" href="#">
+
+                            <img src="http://placehold.it/40x40">
+                            <span style="margin-left: 10px;">Barack Obama</span>
+
+                        </a>
+                        <a class="list-group-item" href="#">
+                            <span style="margin-left: 10px;">xxx申请好友</span> 
+                            <div class="requstButtons" >
+                                    <button class="btn btn-success">允许</button>
+                                    <button class="btn btn-danger">拒绝</button>
+                            </div>
+                        </a>
+                    </ul>
+                </div>
+
+                <div class="buttom" style="margin-left: 5px">
+                    <ul class="nav nav-pills">
+                        <li class="leftSelect" id="msgPanel"><a href="#">消息</a></li>
+                        <li class="leftSelect" id="friendPanel"><a href="#">好友</a></li>
+                        <li class="leftSelect" id="roomPanel"><a href="#">群组</a></li>
+                    </ul>
+                </div>
+
+            </div>
+            <div class="chatright">
+
+                <div class="top">
+                    <img style="border-radius: 20px; vertical-align: middle;" src="http://placehold.it/40x40">
+                    <span style="margin-left: 20px;">Barack Obama</span>
+                    <i class="fas fa-ellipsis-v" style="font-size: 1.4em; position: absolute; right: 20px; color: gray;"></i>
+                </div>
+
+                <div class="center">
+                    <ul>
+                        <li class="msgleft">
+                            <div>
+                                <img style="border-radius: 20px; vertical-align: top;" src="http://placehold.it/40x40">
+                                <p class="msgcard">This message on the left!</p>
+                            </div>
+                        </li>
+                        <li class="msgright">
+                            <p class="msgcard">This message on the right!</p>
+                            <img style="border-radius: 20px; vertical-align: top;" src="http://placehold.it/40x40">
+
+                        </li>
+                        <li class="msgleft">
+                            <img style="border-radius: 20px; vertical-align: top;" src="http://placehold.it/40x40">
+                            <p class="msgcard">This is a long message! This is a long message! This is a long left
+                                message!</p>
+                        </li>
+                        <li class="msgright">
+
+                            <p class="msgcard">This message on the right!</p>
+                            <img style="border-radius: 20px; vertical-align: top;" src="http://placehold.it/40x40">
+
+                        </li>
+                        <li class="msgleft">
+                            <img style="border-radius: 20px; vertical-align: top;" src="http://placehold.it/40x40">
+                            <p class="msgcard">This is a long message! This is a long message! This is a long left
+                                message!</p>
+                        </li>
+                        <li class="msgleft">
+                            <img style="border-radius: 20px; vertical-align: top;" src="http://placehold.it/40x40">
+                            <p class="msgcard">This is a long message! This is a long message! This is a long left
+                                message!</p>
+                        </li>
+                        <li class="msgleft">
+                            <img style="border-radius: 20px; vertical-align: top;" src="http://placehold.it/40x40">
+                            <p class="msgcard">This is a long message! This is a long message! This is a long left
+                                message!</p>
+                        </li>
+                        <li class="msgleft">
+                            <img style="border-radius: 20px; vertical-align: top;" src="http://placehold.it/40x40">
+                            <p class="msgcard">This is a long message! This is a long message! This is a long left
+                                message!</p>
+                        </li>
+                        <li class="msgleft">
+                            <img style="border-radius: 20px; vertical-align: top;" src="http://placehold.it/40x40">
+                            <p class="msgcard">This is a long message! <img src="assets/emoji/0.gif"> This is a long
+                                message! This is a long left
+                                message!</p>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="footer">
+                    <textarea maxlength="800" rows="5" cols="40" style="width: 100%; resize: none; border: none; "
+                        placeholder="请在此输入要发送的内容..."></textarea>
+                    <button class="sendbtn">发送</button>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+
+
+    <script>
+        //放入script/leftSelector.js
+        let leftBottomPanels = document.getElementsByClassName("leftSelect")
+        for (let i = 0; i < leftBottomPanels.length; i++) {
+            leftBottomPanels[i].onclick = function () {
+                for (let y = 0; y < leftBottomPanels.length; y++) {
+                    if (leftBottomPanels[y].classList.contains("active")) leftBottomPanels[y].classList.remove("active")
+                }
+                this.classList.add("active")
+                switch (this.id) {
+                    case "msgPanel": {
+                        console.log(document.getElementById("msg_list").children)
+                        console.log("click panel id: ", this.id)
+                        break
+                    }
+                    case "friendPanel": {
+                        
+                        console.log("click panel id: ", this.id)
+                        break
+                    }
+                    case "roomPanel": {
+
+                        console.log("click panel id: ", this.id)
+                        break
+                    }
+                }
+            }
+        }
+        leftBottomPanels[0].classList.add("active")
+        // require('./script/leftSelector.js')()
+
+
+
+
+    </script>
+
+
+</body>
+
+</html>
