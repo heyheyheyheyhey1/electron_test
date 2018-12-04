@@ -131,7 +131,7 @@
 
         //左下panel按钮事件
         let leftBottomPanels = document.getElementsByClassName("leftSelect")
-        let real_Msg=""
+   
         for (let i = 0; i < leftBottomPanels.length; i++) {
             leftBottomPanels[i].onclick = function () {
                 for (let y = 0; y < leftBottomPanels.length; y++) {
@@ -161,11 +161,11 @@
 
         //发送按钮事件
         document.getElementById('btnSendMessage').onclick = function () {
-            // let msg_text = document.getElementById('msg_area')
-            let msg_text = real_Msg
+            let msg_text = document.getElementById('msg_area')
+            
             console.log("sending ", msg_text)
             let sendObj = {
-                data: msg_text,
+                data: msg_text.value.replace(/\[:emoji_(\d+)]/g,`<img src="assets/emoji/$1.gif">`),
                 senderId: myid
             }
             ws.send(JSON.stringify(sendObj))
@@ -180,21 +180,17 @@
     
         }
         
-        //输入框事件
-        $("#msg_area").bind("input",(e)=>{
-            real_Msg=$("#msg_area").val()
-        })
-
+   
         //表情点击事件
         for (let i =0;i<50;i++){
             let emoji_el = document.createElement("img")
+            emoji_el.src=`assets/emoji/${i}.gif`
+            $("#emojiArea").append(emoji_el)   
             emoji_el.onclick=function (el){
                 $("#emojiArea").css("display","none")
                 $("#msg_area").val($("#msg_area").val()+`[:emoji_${i}]`)
-                real_Msg=real_Msg+`<img src="assets/emoji/${i}.gif">`
             }
-            emoji_el.src=`assets/emoji/${i}.gif`
-            $("#emojiArea").append(emoji_el)    
+             
             
         }
         
@@ -202,7 +198,6 @@
         function parseMsgToItem(msg) {
             console.log("parsing ", msg)
             let obj = JSON.parse(msg)
-
 
             el_li = document.createElement('li')
             el_p = document.createElement('p')
