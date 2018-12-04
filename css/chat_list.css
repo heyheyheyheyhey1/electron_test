@@ -64,9 +64,7 @@ input {
     color: #ECF0F1;
     margin-left: 10px;
 }
-.searchbtn:hover {
-    cursor: pointer;
-}
+
 .chatleft .center {
     overflow-y: scroll;
     height: 82%;
@@ -145,3 +143,19 @@ input {
     justify-content: space-around;
 }
 
+
+#emojiArea{
+   
+    
+    background: azure;
+    border-radius: 20px;
+    height:150px;
+    width:300px;
+    top: -200px;
+    right: -150px;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}

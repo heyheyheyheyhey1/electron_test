@@ -112,9 +112,13 @@
                 <div class="footer">
                     <textarea maxlength="800" rows="5" cols="40" style="width: 100%; resize: none; border: none; "
                         placeholder="请在此输入要发送的内容..." id="msg_area"></textarea>
-                    <button class="sendbtn" id="btnSendMessage">发送</button>
-                </div>
 
+                    <button class="sendbtn" id="btnSelectEmoji">表情</button>
+                    <button class="sendbtn" id="btnSendMessage">发送</button>
+                    <div id="emojiArea">
+
+                    </div>
+                </div>
 
             </div>
         </div>
@@ -123,8 +127,11 @@
 
 
     <script>
-        //ui处理部分
+        /*ui处理部分*/
+
+        //左下panel按钮事件
         let leftBottomPanels = document.getElementsByClassName("leftSelect")
+        
         for (let i = 0; i < leftBottomPanels.length; i++) {
             leftBottomPanels[i].onclick = function () {
                 for (let y = 0; y < leftBottomPanels.length; y++) {
@@ -150,17 +157,45 @@
                 }
             }
         }
+
+
+        //发送按钮事件
+        document.getElementById('btnSendMessage').onclick = function () {
+            let msg_text = document.getElementById('msg_area')
+            console.log("sending ", msg_text.value)
+            let sendObj = {
+                data: msg_text.value,
+                senderId: myid
+            }
+            ws.send(JSON.stringify(sendObj))
+            msg_area.value = ""
+        }
+
+        //表情按钮事件
+        document.getElementById("btnSelectEmoji").onclick=function(e){
+            let emojiArea=document.getElementById("emojiArea")
+            emojiArea.style.display= emojiArea.style.display == "none" ? "": "none"
+        }
+        
+
+        //添加所有的表情进去
+        
+        // function (){
+
+        // }()
+        
+        //处理msg,将msg的信息显示在UI上
         function parseMsgToItem(msg) {
             console.log("parsing ", msg)
-            let obj=JSON.parse(JSON.parse(msg))
+            let obj = JSON.parse(JSON.parse(msg))
 
 
             el_li = document.createElement('li')
             el_p = document.createElement('p')
-            
+
             el_p.classList.add("msgcard")
-            el_p.innerHTML=obj.data
-            console.log(obj,typeof(obj))
+            el_p.innerHTML = obj.data
+            console.log(obj, typeof (obj))
             if (obj.senderId != myid) {
                 el_li.classList.add("msgleft")
 
@@ -170,24 +205,13 @@
 
             el_li.appendChild(el_p)
             document.getElementById("msg_list").appendChild(el_li)
-            document.getElementById("rightCenter").scrollTop =document.getElementById("rightCenter").scrollHeight;
+            document.getElementById("rightCenter").scrollTop = document.getElementById("rightCenter").scrollHeight;
         }
 
         leftBottomPanels[0].classList.add("active")
 
 
 
-        //发送按钮事件
-        document.getElementById('btnSendMessage').onclick = function () {
-            let msg_text = document.getElementById('msg_area')
-            console.log("sending ",msg_text.value)
-            let sendObj={
-                data:msg_text.value,
-                senderId:myid
-            }
-            ws.send(JSON.stringify(sendObj))
-            msg_area.value = ""
-        }
 
 
 
@@ -200,7 +224,17 @@
             parseMsgToItem(JSON.stringify(msg.data))
         }
 
+        ws.onopen = function (server) {
+            console.log("connected", server)
+        }
 
+        ws.onclose = function (server) {
+            console.log("disconnected ", server)
+        }
+
+        ws.onerror = function (err) {
+            console.log(err)
+        }
 
     </script>
 

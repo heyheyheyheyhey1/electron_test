@@ -24,5 +24,9 @@ wsSever.on("connection",(connection)=>{
     // }
 })
 
+wsSever.on("error",(err)=>{
+    console.log(err)
+})
+
 
 httpServer.listen(66)
