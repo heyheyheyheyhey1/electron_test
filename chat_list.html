@@ -131,7 +131,7 @@
 
         //左下panel按钮事件
         let leftBottomPanels = document.getElementsByClassName("leftSelect")
-        
+        let real_Msg=""
         for (let i = 0; i < leftBottomPanels.length; i++) {
             leftBottomPanels[i].onclick = function () {
                 for (let y = 0; y < leftBottomPanels.length; y++) {
@@ -161,33 +161,47 @@
 
         //发送按钮事件
         document.getElementById('btnSendMessage').onclick = function () {
-            let msg_text = document.getElementById('msg_area')
-            console.log("sending ", msg_text.value)
+            // let msg_text = document.getElementById('msg_area')
+            let msg_text = real_Msg
+            console.log("sending ", msg_text)
             let sendObj = {
-                data: msg_text.value,
+                data: msg_text,
                 senderId: myid
             }
             ws.send(JSON.stringify(sendObj))
             msg_area.value = ""
+            real_Msg=""
         }
 
         //表情按钮事件
         document.getElementById("btnSelectEmoji").onclick=function(e){
             let emojiArea=document.getElementById("emojiArea")
-            emojiArea.style.display= emojiArea.style.display == "none" ? "": "none"
+            emojiArea.style.display= emojiArea.style.display == "flex" ? "none": "flex"
+    
         }
         
+        //输入框事件
+        $("#msg_area").bind("input",(e)=>{
+            real_Msg=$("#msg_area").val()
+        })
 
-        //添加所有的表情进去
-        
-        // function (){
-
-        // }()
+        //表情点击事件
+        for (let i =0;i<50;i++){
+            let emoji_el = document.createElement("img")
+            emoji_el.onclick=function (el){
+                $("#emojiArea").css("display","none")
+                $("#msg_area").val($("#msg_area").val()+`[:emoji_${i}]`)
+                real_Msg=real_Msg+`<img src="assets/emoji/${i}.gif">`
+            }
+            emoji_el.src=`assets/emoji/${i}.gif`
+            $("#emojiArea").append(emoji_el)    
+            
+        }
         
         //处理msg,将msg的信息显示在UI上
         function parseMsgToItem(msg) {
             console.log("parsing ", msg)
-            let obj = JSON.parse(JSON.parse(msg))
+            let obj = JSON.parse(msg)
 
 
             el_li = document.createElement('li')
@@ -196,6 +210,8 @@
             el_p.classList.add("msgcard")
             el_p.innerHTML = obj.data
             console.log(obj, typeof (obj))
+            
+            //判断左边还是右边
             if (obj.senderId != myid) {
                 el_li.classList.add("msgleft")
 
@@ -205,6 +221,9 @@
 
             el_li.appendChild(el_p)
             document.getElementById("msg_list").appendChild(el_li)
+            
+            
+            //scroll移动到最下面
             document.getElementById("rightCenter").scrollTop = document.getElementById("rightCenter").scrollHeight;
         }
 
@@ -221,7 +240,7 @@
         console.log("generate id : ", myid)
         ws.onmessage = function (msg) {
             console.log("receive", msg.data)
-            parseMsgToItem(JSON.stringify(msg.data))
+            parseMsgToItem(msg.data)
         }
 
         ws.onopen = function (server) {
