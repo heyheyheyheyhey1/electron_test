@@ -12,7 +12,7 @@ const wsSever = new ws.Server({ server: httpServer })
 //express部分
 app.use(express.static("./"))
 app.use(muilter.any())
-app.use("/",(req,res,next)=>{
+app.use("/", (req, res, next) => {
     console.log("incomming request")
     next()
 })
@@ -21,14 +21,19 @@ app.use("/",(req,res,next)=>{
 app.post("/uploadFiles", (req, res) => {
     let file = req.files[0]
     console.log(file)
-    let name =  file.filename
-    let originalname=file.originalname
-    if (originalname.split(".").length>1){
-        fs.rename(`FileRecv/${name}`,`FileRecv/${name}.${originalname.split(".")[originalname.split(".").length-1]}`)
-        
+    let name = file.filename
+    let originalname = file.originalname
+    let fileDest=`FileRecv/${name}`
+    if (originalname.split(".").length > 1) {
+        fileDest=`FileRecv/${name}.${originalname.split(".")[originalname.split(".").length - 1]}`
+        fs.rename(`FileRecv/${name}`, fileDest,(err)=>{if(err)console.log(err)})
     }
-    res.send("nice")
-   
+    res.send({
+        status: "ok",
+        fileDest,
+        originalname
+    })
+
 })
 
 

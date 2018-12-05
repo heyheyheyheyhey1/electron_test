@@ -15,7 +15,7 @@
             delete window.require;
             delete window.exports;
             delete window.module;
-        }else{
+        } else {
             console.log("in browser")
         }
 
@@ -29,20 +29,9 @@
 </script>
 
 <body class="box">
-    <!-- <div class="leftbar">
-        <ul>
-            <li><i class="fas fa-user"></i></li>
-            <li><i class="fas fa-users"></i></li>
-            <li><i class="fas fa-smile"></i></li>
-            <li><i class="fas fa-envelope"></i></li>
-            <li><i class="fas fa-bell"></i></li>
-            <li><i class="fas fa-calendar-alt"></i></li>
-            <li><i class="fas fa-power-off"></i></li>
-        </ul>
-    </div> -->
+
     <div class="container">
         <div class="chatbox">
-
             <div class="chatleft">
 
                 <div class="top">
@@ -153,7 +142,7 @@
 
         //左下panel按钮事件
         let leftBottomPanels = document.getElementsByClassName("leftSelect")
-        
+
         for (let i = 0; i < leftBottomPanels.length; i++) {
             leftBottomPanels[i].onclick = function () {
                 for (let y = 0; y < leftBottomPanels.length; y++) {
@@ -186,13 +175,14 @@
             let msg_text = document.getElementById('msg_area')
 
             console.log("sending ", msg_text)
-            let sendObj = {
+            let msgSend = {
                 data: msg_text.value.replace(/\[:emoji_(\d+)]/g, `<img src="assets/emoji/$1.gif">`),
-                senderId: myid
+                senderId: myid,
+                msgType: "normal"
             }
-            ws.send(JSON.stringify(sendObj))
+            ws.send(JSON.stringify(msgSend))
             msg_area.value = ""
-            real_Msg = ""
+
         }
 
         //表情按钮事件
@@ -204,9 +194,6 @@
 
         //文件按钮事件
         document.getElementById("btnSelectFile").onclick = function (e) {
-            // console.log("file cliced")
-            // let fileArea= document.getElementById("fileArea")
-            // fileArea.style.display=fileArea.style.display=="flex" ? "none":"flex"
             $("#fileSelector").click()
             console.log("ready")
         }
@@ -225,8 +212,18 @@
             let xmlHttpRequest = new XMLHttpRequest()
             xmlHttpRequest.open("POST", "http://127.0.0.1:66/uploadFiles", true)
             xmlHttpRequest.onreadystatechange = function () {
+                //判断返回值
                 if (this.readyState == 4 && this.status == 200) {
-                    console.log(xmlHttpRequest.responseText)
+                    let msgRecv = JSON.parse(xmlHttpRequest.responseText)
+                    switch (msgRecv.status) {
+                        case "ok": {
+                            console.log(msgRecv)
+                            ws.send(JSON.stringify({ senderId: myid, msgType: "file", fileDest: msgRecv.fileDest, data: "",originalname:msgRecv.originalname }))
+                        }
+                        default: {
+                            console.log("sending file failed")
+                        }
+                    }
                 }
             }
             xmlHttpRequest.send(formData)
@@ -243,23 +240,39 @@
             }
         }
 
-        //处理msg,将msg的信息显示在UI上
+        //处理msg
         function parseMsgToItem(msg) {
             console.log("parsing ", msg)
-            let obj = JSON.parse(msg)
+            let msgRecv = JSON.parse(msg)
 
             el_li = document.createElement('li')
             el_p = document.createElement('p')
 
             el_p.classList.add("msgcard")
-            el_p.innerHTML = obj.data
+
 
             //判断左边还是右边
-            if (obj.senderId != myid) {
+            if (msgRecv.senderId != myid) {
                 el_li.classList.add("msgleft")
 
             } else {
                 el_li.classList.add("msgright")
+            }
+
+            //判断msg类型
+            if (msgRecv.msgType == "normal") {
+                el_p.innerHTML = msgRecv.data
+            } else {
+                let el_a = document.createElement("a")
+                el_a.href = msgRecv.fileDest
+                el_a.download=msgRecv.originalname
+                //文件判断左右
+                if (msgRecv.senderId == myid) {
+                    el_a.innerHTML="成功发送文件，点击此处可下载"
+                } else {
+                    el_a.innerHTML="收到文件，点击此处可下载"
+                }
+                el_p.appendChild(el_a)
             }
 
             el_li.appendChild(el_p)
