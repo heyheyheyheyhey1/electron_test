@@ -161,3 +161,24 @@ input {
     flex-wrap: wrap;
 
 }
+
+#fileArea{
+   
+    background:blanchedalmond;
+    border-radius: 5px;
+    height:150px;
+    width:300px;
+    top: -200px;
+    right: -150px;
+    position: relative;
+    padding: 3px;
+    display: none;
+    flex-direction: row;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+
+}
+
+#fileSelector {
+    display: none;
+}

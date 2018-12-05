@@ -7,7 +7,19 @@
     <link href="css/chat_list.css" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
         crossorigin="anonymous">
+    <script>
+        //兼容jQuery
+        if (window.require != undefined) {
+            console.log("in electron")
+            window.nodeRequire = require;
+            delete window.require;
+            delete window.exports;
+            delete window.module;
+        }else{
+            console.log("in browser")
+        }
 
+    </script>
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -112,11 +124,17 @@
                 <div class="footer">
                     <textarea maxlength="800" rows="5" cols="40" style="width: 100%; resize: none; border: none; "
                         placeholder="请在此输入要发送的内容..." id="msg_area"></textarea>
+                    <button class="sendbtn" id="btnSelectFile">文件</button>
 
                     <button class="sendbtn" id="btnSelectEmoji">表情</button>
                     <button class="sendbtn" id="btnSendMessage">发送</button>
                     <div id="emojiArea">
 
+                    </div>
+                    <div id="fileArea">
+                        <form action="file" enctype="multipart/form-data" id="fileForm">
+                            <input type="file" id="fileSelector" onchange="uploadFile(this)">
+                        </form>
                     </div>
                 </div>
 
@@ -127,11 +145,15 @@
 
 
     <script>
+
+
+
+
         /*ui处理部分*/
 
         //左下panel按钮事件
         let leftBottomPanels = document.getElementsByClassName("leftSelect")
-   
+        
         for (let i = 0; i < leftBottomPanels.length; i++) {
             leftBottomPanels[i].onclick = function () {
                 for (let y = 0; y < leftBottomPanels.length; y++) {
@@ -162,38 +184,65 @@
         //发送按钮事件
         document.getElementById('btnSendMessage').onclick = function () {
             let msg_text = document.getElementById('msg_area')
-            
+
             console.log("sending ", msg_text)
             let sendObj = {
-                data: msg_text.value.replace(/\[:emoji_(\d+)]/g,`<img src="assets/emoji/$1.gif">`),
+                data: msg_text.value.replace(/\[:emoji_(\d+)]/g, `<img src="assets/emoji/$1.gif">`),
                 senderId: myid
             }
             ws.send(JSON.stringify(sendObj))
             msg_area.value = ""
-            real_Msg=""
+            real_Msg = ""
         }
 
         //表情按钮事件
-        document.getElementById("btnSelectEmoji").onclick=function(e){
-            let emojiArea=document.getElementById("emojiArea")
-            emojiArea.style.display= emojiArea.style.display == "flex" ? "none": "flex"
-    
+        document.getElementById("btnSelectEmoji").onclick = function (e) {
+            let emojiArea = document.getElementById("emojiArea")
+            emojiArea.style.display = emojiArea.style.display == "flex" ? "none" : "flex"
+
         }
-        
-   
-        //表情点击事件
-        for (let i =0;i<50;i++){
-            let emoji_el = document.createElement("img")
-            emoji_el.src=`assets/emoji/${i}.gif`
-            $("#emojiArea").append(emoji_el)   
-            emoji_el.onclick=function (el){
-                $("#emojiArea").css("display","none")
-                $("#msg_area").val($("#msg_area").val()+`[:emoji_${i}]`)
+
+        //文件按钮事件
+        document.getElementById("btnSelectFile").onclick = function (e) {
+            // console.log("file cliced")
+            // let fileArea= document.getElementById("fileArea")
+            // fileArea.style.display=fileArea.style.display=="flex" ? "none":"flex"
+            $("#fileSelector").click()
+            console.log("ready")
+        }
+
+
+        //上传文件事件
+        function uploadFile(el) {
+            let file = el.files[0]
+            console.log(file)
+            let formData = new FormData(file)
+            formData.append("senderID", myid)
+            formData.append("file", file)
+            console.log("get file form", formData)
+
+            //构建xmlHttpRequest
+            let xmlHttpRequest = new XMLHttpRequest()
+            xmlHttpRequest.open("POST", "http://127.0.0.1:66/uploadFiles", true)
+            xmlHttpRequest.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    console.log(xmlHttpRequest.responseText)
+                }
             }
-             
-            
+            xmlHttpRequest.send(formData)
         }
-        
+
+        //表情按钮点击事件
+        for (let i = 0; i < 50; i++) {
+            let emoji_el = document.createElement("img")
+            emoji_el.src = `assets/emoji/${i}.gif`
+            $("#emojiArea").append(emoji_el)
+            emoji_el.onclick = function (el) {
+                $("#emojiArea").css("display", "none")
+                $("#msg_area").val($("#msg_area").val() + `[:emoji_${i}]`)
+            }
+        }
+
         //处理msg,将msg的信息显示在UI上
         function parseMsgToItem(msg) {
             console.log("parsing ", msg)
@@ -204,8 +253,7 @@
 
             el_p.classList.add("msgcard")
             el_p.innerHTML = obj.data
-            console.log(obj, typeof (obj))
-            
+
             //判断左边还是右边
             if (obj.senderId != myid) {
                 el_li.classList.add("msgleft")
@@ -216,8 +264,8 @@
 
             el_li.appendChild(el_p)
             document.getElementById("msg_list").appendChild(el_li)
-            
-            
+
+
             //scroll移动到最下面
             document.getElementById("rightCenter").scrollTop = document.getElementById("rightCenter").scrollHeight;
         }
