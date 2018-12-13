@@ -39,7 +39,7 @@
                 </div>
 
                 <div class="center">
-                    <ul id="chatting_list" class="list-group">
+                    <ul id="chatList" class="list-group">
                         <a class="list-group-item " href="#">
                             <span style="margin-left: 10px;">Barack Obama</span>
                             <span class="badge">1</span>
@@ -77,7 +77,7 @@
                 </div>
 
                 <div class="center" id="rightCenter">
-                    <ul id="msg_list">
+                    <ul id="msgList">
                         <li class="msgleft">
                             <div>
                                 <p class="msgcard">This message on the left!</p>
@@ -112,7 +112,7 @@
 
                 <div class="footer">
                     <textarea maxlength="800" rows="5" cols="40" style="width: 100%; resize: none; border: none; "
-                        placeholder="请在此输入要发送的内容..." id="msg_area"></textarea>
+                        placeholder="请在此输入要发送的内容..." id="writtingArea"></textarea>
                     <button class="sendbtn" id="btnSelectFile">文件</button>
 
                     <button class="sendbtn" id="btnSelectEmoji">表情</button>
@@ -142,7 +142,7 @@
 
         //左下panel按钮事件
         let leftBottomPanels = document.getElementsByClassName("leftSelect")
-
+        leftBottomPanels[0].classList.add("active")
         for (let i = 0; i < leftBottomPanels.length; i++) {
             leftBottomPanels[i].onclick = function () {
                 for (let y = 0; y < leftBottomPanels.length; y++) {
@@ -151,7 +151,7 @@
                 this.classList.add("active")
                 switch (this.id) {
                     case "msgPanel": {
-                        console.log(document.getElementById("chatting_list").children)
+                        
                         console.log("click panel id: ", this.id)
                         break
                     }
@@ -172,7 +172,7 @@
 
         //发送按钮事件
         document.getElementById('btnSendMessage').onclick = function () {
-            let msg_text = document.getElementById('msg_area')
+            let msg_text = document.getElementById('writtingArea')
 
             console.log("sending ", msg_text)
             let msgSend = {
@@ -181,7 +181,7 @@
                 msgType: "normal"
             }
             ws.send(JSON.stringify(msgSend))
-            msg_area.value = ""
+            writtingArea.value = ""
 
         }
 
@@ -236,7 +236,7 @@
             $("#emojiArea").append(emoji_el)
             emoji_el.onclick = function (el) {
                 $("#emojiArea").css("display", "none")
-                $("#msg_area").val($("#msg_area").val() + `[:emoji_${i}]`)
+                $("#writtingArea").val($("#writtingArea").val() + `[:emoji_${i}]`)
             }
         }
 
@@ -268,22 +268,24 @@
                 el_a.download=msgRecv.originalname
                 //文件判断左右
                 if (msgRecv.senderId == myid) {
-                    el_a.innerHTML="成功发送文件，点击此处可下载"
+                    el_a.innerHTML=`成功发送文件 ${msgRecv.originalname} ，点击此处可下载`
                 } else {
-                    el_a.innerHTML="收到文件，点击此处可下载"
+                    el_a.innerHTML=`收到文件 ${msgRecv.originalname} ，点击此处可下载`
                 }
                 el_p.appendChild(el_a)
             }
-
+            
+            //el加入新元素
             el_li.appendChild(el_p)
-            document.getElementById("msg_list").appendChild(el_li)
+
+            //添加el
+            document.getElementById("msgList").appendChild(el_li)
 
 
             //scroll移动到最下面
             document.getElementById("rightCenter").scrollTop = document.getElementById("rightCenter").scrollHeight;
         }
 
-        leftBottomPanels[0].classList.add("active")
 
 
 
