@@ -1,7 +1,6 @@
 const { app, BrowserWindow } = require('electron')
 const ipc = require('electron').ipcMain
-const process = require('child_process')
-process.exec('node server.js')
+
 // 保持对window对象的全局引用，如果不这么做的话，当JavaScript对象被
 // 垃圾回收的时候，window对象将会自动的关闭
 let win_login
@@ -9,10 +8,10 @@ let win_chat_list
 
 function createWindowLogin() {
   // 创建浏览器窗口。
-  win_login = new BrowserWindow({ width: 1300, height: 860 })
+  win_login = new BrowserWindow({ width: 1350, height: 950 })
   // 然后加载应用的 index.html。
   win_login.loadFile('login.html')
-
+  win_login.webContents.openDevTools()
   // 当 window 被关闭，这个事件会被触发。
   win_login.on('closed', () => {
     // 取消引用 window 对象，如果你的应用支持多窗口的话，
@@ -22,13 +21,6 @@ function createWindowLogin() {
   })
 }
 
-
-//创建隐藏的chat_list窗口
-// function createWindowChatList(){
-//   win_chat_list=new BrowserWindow({width:1200,height:860,show:false})
-//   win_chat_list.loadFile('chat_list.html')
-
-// }
 
 
 
@@ -55,9 +47,7 @@ app.on('activate', () => {
 })
 
 ipc.on('show_chat_list', () => {
-  // createWindowChatList()
-  // win_chat_list.show()
-  win_login.loadFile('chat_list.html')
+  win_login.loadFile('chatList.html')
   win_login.webContents.openDevTools()
 })
 

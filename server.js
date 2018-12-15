@@ -8,48 +8,36 @@ const ws = require('ws')
 const http = require('http')
 const httpServer = http.createServer(app)
 const wsSever = new ws.Server({ server: httpServer })
-
+var sockets=[]
 //express部分
 app.use(express.static("./"))
 app.use(muilter.any())
 app.use("/", (req, res, next) => {
-    console.log("incomming request")
+    console.log(req.url)
     next()
 })
-
-
-app.post("/uploadFiles", (req, res) => {
-    let file = req.files[0]
-    console.log(file)
-    let name = file.filename
-    let originalname = file.originalname
-    let fileDest=`FileRecv/${name}`
-    if (originalname.split(".").length > 1) {
-        fileDest=`FileRecv/${name}.${originalname.split(".")[originalname.split(".").length - 1]}`
-        fs.rename(`FileRecv/${name}`, fileDest,(err)=>{if(err)console.log(err)})
-    }
-    res.send({
-        status: "ok",
-        fileDest,
-        originalname
-    })
-
-})
-
-
+app.use("/uploadFiles", require("./routers/uploadFiles.js"))
+app.use("/login",require("./routers/login.js"))
+app.use("/getinfo",require("./routers/getinfo.js"))
+app.use("/searchUser",require("./routers/searchUser.js"))
+// app.use("/rejiste"),require("./routers/rejiste.js")
 
 
 
 //ws 部分
 wsSever.on("connection", (connection) => {
-    console.log('new connection')
+    console.log('new connection with protocol : ',connection.protocol)
+    sockets[connection.protocol]=connection
     connection.on('message', (msg) => {
         console.log(msg)
-        wsSever.clients.forEach((el) => {
-            el.send(msg)
-        })
-    })
+        let targetid=JSON.parse(msg).targetid
+        connection.send(msg)
+        if(sockets[targetid]!=undefined) sockets[targetid].send(msg)
 
+    })
+    connection.on("close",(arg)=>{
+        sockets[connection.protocol]=undefined
+    })
     //可以获取msg的具体信息
     // connection.onmessage=(msg)=>{
     //     console.log(msg.data)

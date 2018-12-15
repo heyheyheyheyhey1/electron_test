@@ -60,79 +60,21 @@
 	</style>
 </head>
 <body>
-	<!-- BOM(browser object model,全称：浏览器对象模型)
-	BOM是用来窗口之间的通讯，核心对象是window
-
-	*window拥有全局作用域。js中定义的变量是作为window的属性，function作为window的方法
-	*BOM中的其它对象都是window的子元素
-	注意：通过关键字声明的变量具有不可操作性
-
-	window对象身上的属性：
-		*获取窗口尺寸
-		window.innerWidth
-		window.innerHeight
-
-		window.outerinnerWidth
-		window.outerinnerHeight
-		以上适用于IE8以上，FF，谷歌
-
-		console.log(document.documentElement.clientWidth);
-		console.log(document.documentElement.clientHeight);
-		IE6
-      *有关窗口的位置
-       console.log(window.screenX);
-	   console.log(window.screenY);
-	  *分辨率
-
-	  *window的子对象
-	   history:历史记录
-	   location：地址栏信息
-	   document：文档对象
-	   frames：子窗口信息
-	   screen：屏幕信息
-	   navigator：浏览器信息
-
-
-	   *顶层窗口
-	   	window.top
-	   	window.self
-
-
-	   	window身上的方法
-	   	*移动窗口
-	   	  window.moveTo()
-	   	  window.moveBy()
-	   	*滚动条的位置
-	   	 Window.ScrrllTo()
-	   	 Window.ScrrllBy()
-	   	*时间函数
-	   	 setInterval(callback,时间);
-	   	 clearlnterval
-
-	   	 setInterval(cakkbacj,时间);
-	   	 clearTimeout
- -->
+	
 	<div class="container">
 		<main>
 			<section>
 				<libel for="">用户名</libel>
-			<input type="username" placeholder="请输入用户名" class="username" name="username"><br>
+			<input type="username" placeholder="请输入用户名" class="username" id="email"><br>
 			<libel for=""> 密    码</libel>
-			  <input type="password" placeholder="请输入密码" class="pass" name="pass"><br>
-			<input type="submit" value="登陆" class="submit">
+			  <input type="password" placeholder="请输入密码" class="pass" id="passwd"><br>
+			<input type="submit" value="登陆" class="submit" id="btnLogin">
 			<input type="submit" value="注册" class="submit">
 	  </main>
 	  </section>
 	</div>
 </body>
 </html>
-<script>
-		const ipc = require('electron').ipcRenderer
-		let username=document.querySelector(".username");
-		let pass=document.querySelector(".pass");
-		let submit=document.querySelector('.submit');
-		submit.onclick=function(){
-			ipc.send('show_chat_list');
-		}
+<script src="./script/login.js">
 		
 </script>

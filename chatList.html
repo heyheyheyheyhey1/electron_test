@@ -9,6 +9,7 @@
         crossorigin="anonymous">
     <script>
         //兼容jQuery
+        var isInBrowser = false
         if (window.require != undefined) {
             console.log("in electron")
             window.nodeRequire = require;
@@ -16,6 +17,7 @@
             delete window.exports;
             delete window.module;
         } else {
+            isInBrowser=true
             console.log("in browser")
         }
 
@@ -35,91 +37,58 @@
             <div class="chatleft">
 
                 <div class="top">
-                    <span style="padding-left: 10px">weocome </span>
+                    <span style="padding-left: 5px">weocome:</span>
+                    <b style="padding-left:10px" id="username"></b>
                 </div>
 
                 <div class="center">
                     <ul id="chatList" class="list-group">
-                        <a class="list-group-item " href="#">
+                        <!-- <a class="list-group-item" href="#">
                             <span style="margin-left: 10px;">Barack Obama</span>
                             <span class="badge">1</span>
                         </a>
 
                         <a class="list-group-item" href="#">
-
                             <span style="margin-left: 10px;">Barack Obama</span>
-
-                        </a>
-                        <a class="list-group-item" href="#">
-                            <span style="margin-left: 10px;">xxx申请好友</span>
-                            <div class="requstButtons">
-                                <button class="btn btn-success">允许</button>
-                                <button class="btn btn-danger">拒绝</button>
-                            </div>
-                        </a>
+                        </a> -->
                     </ul>
                 </div>
 
-                <div class="buttom" style="margin-left: 5px">
-                    <ul class="nav nav-pills">
-                        <li class="leftSelect" id="msgPanel"><a href="#">消息</a></li>
-                        <li class="leftSelect" id="friendPanel"><a href="#">好友</a></li>
-                        <li class="leftSelect" id="roomPanel"><a href="#">群组</a></li>
-                    </ul>
+                <div class="buttom col-lg-6" style="margin-left: 3px;margin-top: 5px">
+                    
+                        <div class="input-group">
+                            <input type="text" class="form-control" style="width:155px" placeholder="输入账户添至列表" id="currentTargetInput">
+                            <span class="input-group-btn">
+                                <button class="btn btn-primary" type="button" id="btnAddTarget">
+                                    添加
+                                </button>
+                            </span>
+                        </div><!-- /input-group -->
+                            
                 </div>
 
             </div>
             <div class="chatright">
 
                 <div class="top">
-                    <h4 style="margin-left: 20px;" id="chating_">Barack Obama</h4>
+                    <h4 style="margin-left: 20px;" id="chattingName"></h4>
                     <!-- <i class="fas fa-ellipsis-v" style="font-size: 1.4em; position: absolute; right: 20px; color: gray;"></i> -->
                 </div>
 
                 <div class="center" id="rightCenter">
                     <ul id="msgList">
-                        <li class="msgleft">
-                            <div>
-                                <p class="msgcard">This message on the left!</p>
-                            </div>
-                        </li>
-
-                        <li class="msgright">
-                            <p class="msgcard">This message on the right!</p>
-
-                        </li>
-                        <li class="msgleft">
-                            <p class="msgcard">This is a long message! This is a long message! This is a long left
-                                message!</p>
-                        </li>
-                        <li class="msgright">
-
-                            <p class="msgcard">This message on the right!</p>
-
-                        </li>
-                        <li class="msgleft">
-                            <p class="msgcard">This is a long message! This is a long message! This is a long left
-                                message!</p>
-                        </li>
-
-                        <li class="msgleft">
-                            <p class="msgcard">This is a long message! <img src="assets/emoji/0.gif"> This is a long
-                                message! This is a long left
-                                message!</p>
-                        </li>
+                        
                     </ul>
                 </div>
 
                 <div class="footer">
                     <textarea maxlength="800" rows="5" cols="40" style="width: 100%; resize: none; border: none; "
                         placeholder="请在此输入要发送的内容..." id="writtingArea"></textarea>
-                    <button class="sendbtn" id="btnSelectFile">文件</button>
+                    <button class="sendbtn btn-success btn" id="btnSelectFile">文件</button>
 
-                    <button class="sendbtn" id="btnSelectEmoji">表情</button>
-                    <button class="sendbtn" id="btnSendMessage">发送</button>
-                    <div id="emojiArea">
-
-                    </div>
+                    <button class="sendbtn btn-info btn" id="btnSelectEmoji">表情</button>
+                    <button class="sendbtn btn-warning btn" id="btnSendMessage">发送</button>
+                    <div id="emojiArea"></div>
                     <div id="fileArea">
                         <form action="file" enctype="multipart/form-data" id="fileForm">
                             <input type="file" id="fileSelector" onchange="uploadFile(this)">
@@ -133,187 +102,7 @@
 
 
 
-    <script>
-
-
-
-
-        /*ui处理部分*/
-
-        //左下panel按钮事件
-        let leftBottomPanels = document.getElementsByClassName("leftSelect")
-        leftBottomPanels[0].classList.add("active")
-        for (let i = 0; i < leftBottomPanels.length; i++) {
-            leftBottomPanels[i].onclick = function () {
-                for (let y = 0; y < leftBottomPanels.length; y++) {
-                    if (leftBottomPanels[y].classList.contains("active")) leftBottomPanels[y].classList.remove("active")
-                }
-                this.classList.add("active")
-                switch (this.id) {
-                    case "msgPanel": {
-                        
-                        console.log("click panel id: ", this.id)
-                        break
-                    }
-                    case "friendPanel": {
-
-                        console.log("click panel id: ", this.id)
-                        break
-                    }
-                    case "roomPanel": {
-
-                        console.log("click panel id: ", this.id)
-                        break
-                    }
-                }
-            }
-        }
-
-
-        //发送按钮事件
-        document.getElementById('btnSendMessage').onclick = function () {
-            let msg_text = document.getElementById('writtingArea')
-
-            console.log("sending ", msg_text)
-            let msgSend = {
-                data: msg_text.value.replace(/\[:emoji_(\d+)]/g, `<img src="assets/emoji/$1.gif">`),
-                senderId: myid,
-                msgType: "normal"
-            }
-            ws.send(JSON.stringify(msgSend))
-            writtingArea.value = ""
-
-        }
-
-        //表情按钮事件
-        document.getElementById("btnSelectEmoji").onclick = function (e) {
-            let emojiArea = document.getElementById("emojiArea")
-            emojiArea.style.display = emojiArea.style.display == "flex" ? "none" : "flex"
-
-        }
-
-        //文件按钮事件
-        document.getElementById("btnSelectFile").onclick = function (e) {
-            $("#fileSelector").click()
-            console.log("ready")
-        }
-
-
-        //上传文件事件
-        function uploadFile(el) {
-            let file = el.files[0]
-            console.log(file)
-            let formData = new FormData(file)
-            formData.append("senderID", myid)
-            formData.append("file", file)
-            console.log("get file form", formData)
-
-            //构建xmlHttpRequest
-            let xmlHttpRequest = new XMLHttpRequest()
-            xmlHttpRequest.open("POST", "http://127.0.0.1:66/uploadFiles", true)
-            xmlHttpRequest.onreadystatechange = function () {
-                //判断返回值
-                if (this.readyState == 4 && this.status == 200) {
-                    let msgRecv = JSON.parse(xmlHttpRequest.responseText)
-                    switch (msgRecv.status) {
-                        case "ok": {
-                            console.log(msgRecv)
-                            ws.send(JSON.stringify({ senderId: myid, msgType: "file", fileDest: msgRecv.fileDest, data: "",originalname:msgRecv.originalname }))
-                        }
-                        default: {
-                            console.log("sending file failed")
-                        }
-                    }
-                }
-            }
-            xmlHttpRequest.send(formData)
-        }
-
-        //表情按钮点击事件
-        for (let i = 0; i < 50; i++) {
-            let emoji_el = document.createElement("img")
-            emoji_el.src = `assets/emoji/${i}.gif`
-            $("#emojiArea").append(emoji_el)
-            emoji_el.onclick = function (el) {
-                $("#emojiArea").css("display", "none")
-                $("#writtingArea").val($("#writtingArea").val() + `[:emoji_${i}]`)
-            }
-        }
-
-        //处理msg
-        function parseMsgToItem(msg) {
-            console.log("parsing ", msg)
-            let msgRecv = JSON.parse(msg)
-
-            el_li = document.createElement('li')
-            el_p = document.createElement('p')
-
-            el_p.classList.add("msgcard")
-
-
-            //判断左边还是右边
-            if (msgRecv.senderId != myid) {
-                el_li.classList.add("msgleft")
-
-            } else {
-                el_li.classList.add("msgright")
-            }
-
-            //判断msg类型
-            if (msgRecv.msgType == "normal") {
-                el_p.innerHTML = msgRecv.data
-            } else {
-                let el_a = document.createElement("a")
-                el_a.href = msgRecv.fileDest
-                el_a.download=msgRecv.originalname
-                //文件判断左右
-                if (msgRecv.senderId == myid) {
-                    el_a.innerHTML=`成功发送文件 ${msgRecv.originalname} ，点击此处可下载`
-                } else {
-                    el_a.innerHTML=`收到文件 ${msgRecv.originalname} ，点击此处可下载`
-                }
-                el_p.appendChild(el_a)
-            }
-            
-            //el加入新元素
-            el_li.appendChild(el_p)
-
-            //添加el
-            document.getElementById("msgList").appendChild(el_li)
-
-
-            //scroll移动到最下面
-            document.getElementById("rightCenter").scrollTop = document.getElementById("rightCenter").scrollHeight;
-        }
-
-
-
-
-
-
-
-        //websocket处理部分
-        let ws = new WebSocket("ws://127.0.0.1:66")
-        let myid = parseInt(Math.random() * 100)
-        console.log("generate id : ", myid)
-        ws.onmessage = function (msg) {
-            console.log("receive", msg.data)
-            parseMsgToItem(msg.data)
-        }
-
-        ws.onopen = function (server) {
-            console.log("connected", server)
-        }
-
-        ws.onclose = function (server) {
-            console.log("disconnected ", server)
-        }
-
-        ws.onerror = function (err) {
-            console.log(err)
-        }
-
-    </script>
+    <script src="script/chatList.js"></script>
 
 
 </body>

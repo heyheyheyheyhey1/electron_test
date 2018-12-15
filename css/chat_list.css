@@ -30,14 +30,13 @@ input {
 .container {
     height: 100%;
     width: 100%;
-    background:  linear-gradient(#1f94bf 20%,#edf5f8 0, #edf5f8 80%, #1f94bf 0);
     display: flex;
     margin: 0;
 }
 .chatbox {
-    margin: auto;
+    margin: 130px auto;
     height: 80%;
-    width: 70%;
+    width: 80%;
     transform: translateY(-10%);
     box-shadow: 0 0 0 1px gray;
     display: flex;
@@ -55,14 +54,6 @@ input {
     display: flex;
     align-items: center;
     padding-left: 20px;
-}
-.searchbtn {
-    height: 36px;
-    width: 36px;
-    border-radius: 18px;
-    background-color: #1f94bf;
-    color: #ECF0F1;
-    margin-left: 10px;
 }
 
 .chatleft .center {
@@ -126,22 +117,17 @@ input {
     text-align: right;
 }
 .sendbtn {
-    height: 40px;
-    width: 80px;
-    border-radius: 10px;
-    background-color: #58D68D;
-    color: white;
-    font-weight: bold;
+    /* height: 40px;
+    width: 80px; */
+    /* border-radius: 10px; */
+    /* background-color: #58D68D;
+    color: white; */
+    /* font-weight: bold; */
     margin:10px 20px 0 0;
 }
 
 
-.requstButtons {
-    width: 90%; 
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-}
+
 
 
 #emojiArea{
@@ -152,7 +138,7 @@ input {
     height:150px;
     width:300px;
     top: -200px;
-    right: -150px;
+    right: -230px;
     position: relative;
     padding: 3px;
     display: none;
@@ -162,22 +148,6 @@ input {
 
 }
 
-#fileArea{
-   
-    background:blanchedalmond;
-    border-radius: 5px;
-    height:150px;
-    width:300px;
-    top: -200px;
-    right: -150px;
-    position: relative;
-    padding: 3px;
-    display: none;
-    flex-direction: row;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-
-}
 
 #fileSelector {
     display: none;
