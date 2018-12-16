@@ -52,6 +52,17 @@ function createUser(user) {
     })
 }
 
+function updateUser(filter, filterArg, targetFilter, targetFilterArg) {
+    return new Promise((res, rej) => {
+        db.query(`update users set ${targetFilter} = ${targetFilterArg} where ${filter} = ${filterArg}`, (err, data) => {
+            if (err) {
+                rej(err)
+            }
+            else res(data)
+        })
+    })
+}
+
 exports.createMsgView = createMsgView
 exports.getMsgView = getMsgView
 exports.insertMsg = insertMsg

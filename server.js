@@ -21,7 +21,7 @@ app.use("/login",require("./routers/login.js"))
 app.use("/getinfo",require("./routers/getinfo.js"))
 app.use("/searchUser",require("./routers/searchUser.js"))
 // app.use("/rejiste"),require("./routers/rejiste.js")
-
+app.use("/active",require("./routers/active.js"))
 
 
 //ws 部分
