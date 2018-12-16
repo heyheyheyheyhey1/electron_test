@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<meta charset="UTF-8">
-	<title>login</title>	
+	<title>login</title>
 	<style>
 		*{
 			margin: 0;
@@ -57,23 +58,40 @@
 			border-radius: 5px;
 		}	
 	</style>
+	<script>
+		//兼容jQuery
+		var isInBrowser = false
+		if (window.require != undefined) {
+			console.log("in electron")
+			window.nodeRequire = require;
+			delete window.require;
+			delete window.exports;
+			delete window.module;
+		} else {
+			isInBrowser = true
+			console.log("in browser")
+		}
+		
+	</script>
 </head>
+
 <body>
-	
+
 	<div class="container">
 		<main>
 			<section>
 				<libel for="">用户名</libel>
-			<input type="username" placeholder="请输入用户名" class="username" id="email"><br>
-			<libel for=""> 密    码</libel>
-			  <input type="password" placeholder="请输入密码" class="pass" id="passwd"><br>
-			<input type="submit" value="登陆" class="submit" id="btnLogin">
-			<input type="submit" value="注册" class="submit">
-	  </main>
-	  </section>
+				<input type="username" placeholder="请输入用户名" class="username" id="email"><br>
+				<libel for=""> 密 码</libel>
+				<input type="password" placeholder="请输入密码" class="pass" id="passwd"><br>
+				<input type="submit" value="登陆" class="submit" id="btnLogin">
+				<input type="submit" value="注册" class="submit">
+		</main>
+		</section>
 	</div>
 </body>
+
 </html>
 <script src="./script/login.js">
-		
+
 </script>

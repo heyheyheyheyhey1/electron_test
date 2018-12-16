@@ -4,7 +4,8 @@ const ipc = require('electron').ipcMain
 // 保持对window对象的全局引用，如果不这么做的话，当JavaScript对象被
 // 垃圾回收的时候，window对象将会自动的关闭
 let win_login
-let win_chat_list
+let myid = -1
+
 
 function createWindowLogin() {
   // 创建浏览器窗口。
@@ -45,11 +46,21 @@ app.on('activate', () => {
     createWindowLogin()
   }
 })
+ipc.on("setid", setid)
+ipc.on("getid", getid)
+ipc.on("showChatList",showChatList)
+function getid(event, arg) {
+  event.returnValue = myid
+}
+function setid(event, arg) {
 
-ipc.on('show_chat_list', () => {
-  win_login.loadFile('chatList.html')
-  win_login.webContents.openDevTools()
-})
+  myid = arg
+  console.log("setid", myid)
+}
+function showChatList() {
+  win_login.loadFile("chatList.html")
+}
+
 
 
 // 在这个文件中，你可以续写应用剩下主进程代码。

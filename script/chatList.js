@@ -14,12 +14,8 @@ if (isInBrowser) {
         window.close()
     }
 } else {
-    const ipcRender = require('electron').ipcRenderer
-    ipcRender.send("getid")
-    ipcRender.on("idRequest", (event, arg) => {
-        console.log("get id ", arg)
-        myid = arg
-    })
+    const ipcRender = nodeRequire('electron').ipcRenderer
+    myid=ipcRender.sendSync("getid")
 }
 
 //获取和设置用户信息
