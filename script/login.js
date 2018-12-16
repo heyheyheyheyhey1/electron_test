@@ -15,7 +15,7 @@ submit.onclick = function () {
             let info = JSON.parse(xmlRequest.responseText)
             console.log(info)
             if (info.status=="ok"){
-                window.open("http://127.0.0.1:66/chatList.html?id=1","_self",null,true)
+                window.open(`http://127.0.0.1:66/chatList.html?id=${info.id}`,"_self",null,true)
             }
         }
     }

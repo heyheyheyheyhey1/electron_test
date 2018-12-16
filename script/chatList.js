@@ -91,7 +91,7 @@ function uploadFile(el) {
             switch (msgRecv.status) {
                 case "ok": {
                     console.log(msgRecv)
-                    ws.send(JSON.stringify({ senderid: myid, msgType: "file", fileDest: msgRecv.fileDest, data: "", originalname: msgRecv.originalname,targetid }))
+                    ws.send(JSON.stringify({ senderid: myid, msgType: "file", fileDest: msgRecv.fileDest, data: "", originalname: msgRecv.originalname, targetid }))
                 }
                 default: {
                     console.log("sending file failed")
@@ -148,7 +148,7 @@ function getUserInfoById(arg) {
 
 //添加至聊天列表
 function addToChatList(arg) {
-    console.log("adding: ",arg)
+    console.log("adding: ", arg)
     $("#currentTargetInput").val("")
     arg = JSON.parse(arg)
 
@@ -159,7 +159,7 @@ function addToChatList(arg) {
     el_a.href = "#"
     el_a.classList.add("list-group-item")
     el_a.onclick = function () {
-        if(targetid==arg.id) return
+        if (targetid == arg.id) return
         targetid = arg.id
         document.getElementById("chattingName").innerHTML = `${arg.username}`
 
@@ -181,7 +181,7 @@ function addToChatList(arg) {
 
 //刷新MsgList
 function refreshMsgList(arg) {
-    
+
     console.log("target change to ", targetid, arg.username)
     console.log()
     $("#msgList")[0].innerHTML = ""
@@ -214,16 +214,26 @@ function parseMsgToItem(msg) {
     if (msgRecv.msgType == "normal") {
         el_p.innerHTML = msgRecv.data
     } else {
-        let el_a = document.createElement("a")
-        el_a.href = msgRecv.fileDest
-        el_a.download = msgRecv.originalname
-        //文件判断左右
-        if (msgRecv.senderid == myid) {
-            el_a.innerHTML = `成功发送文件 ${msgRecv.originalname} ，点击此处可下载`
+        console.log(msgRecv.originalname.split(".")[1])
+        if (["jpg", "jpeg", "png", "gif", "JPG", "JPEG", "PNG", "GIF"].indexOf(msgRecv.originalname.split(".")[1])!=-1) {
+            console.log("recv img")
+            let el_img = document.createElement("img")
+            el_img.style="height:90px;width:60px"
+            el_img.src=msgRecv.fileDest
+            el_p.appendChild(el_img)
         } else {
-            el_a.innerHTML = `收到文件 ${msgRecv.originalname} ，点击此处可下载`
+            console.log("recv file")
+            let el_a = document.createElement("a")
+            el_a.href = msgRecv.fileDest
+            el_a.download = msgRecv.originalname
+            //文件判断左右
+            if (msgRecv.senderid == myid) {
+                el_a.innerHTML = `成功发送文件 ${msgRecv.originalname} ，点击此处可下载`
+            } else {
+                el_a.innerHTML = `收到文件 ${msgRecv.originalname} ，点击此处可下载`
+            }
+            el_p.appendChild(el_a)
         }
-        el_p.appendChild(el_a)
     }
 
     //el加入新元素
@@ -231,7 +241,7 @@ function parseMsgToItem(msg) {
 
     //添加el
     //当发送者为我或者发送者为当前对象才添加
-    if(msgRecv.senderid==myid||msgRecv.senderid==targetid) document.getElementById("msgList").appendChild(el_li)
+    if (msgRecv.senderid == myid || msgRecv.senderid == targetid) document.getElementById("msgList").appendChild(el_li)
 
 
     //scroll移动到最下面
@@ -250,12 +260,12 @@ let ws = new WebSocket("ws://127.0.0.1:66", [myid])
 ws.onmessage = function (msg) {
     console.log("receive", msg.data)
     //发送者是我则向当前对象消息列表推入
-    if(JSON.parse(msg.data).senderid==myid){
+    if (JSON.parse(msg.data).senderid == myid) {
         targets[targetid].msgs.push(msg.data)
-    }else{
+    } else {
         //发送者不是我，判断发送者存储数组是不是undifined,如果是证明是对方发起的新会话
-        if (targets[JSON.parse(msg.data).senderid]==undefined){
-            let info=getUserInfoById(JSON.parse(msg.data).senderid)
+        if (targets[JSON.parse(msg.data).senderid] == undefined) {
+            let info = getUserInfoById(JSON.parse(msg.data).senderid)
             addToChatList(info)
         }
         //发送者的消息列表插一条
