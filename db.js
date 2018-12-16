@@ -46,7 +46,7 @@ function createMsgView(user) {
 function createUser(user) {
     return new Promise((res, rej) => {
         db.query(`insert into users (username,email,isactive,passwd) values("${user.username}","${user.email}","${0}","${user.passwd}")`, (err, data) => {
-            if (err) rej(err)
+            if (err) rej("已经被注册")
             else res("ok")
         })
     })
