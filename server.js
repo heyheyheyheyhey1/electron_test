@@ -10,7 +10,6 @@ const httpServer = http.createServer(app)
 const wsSever = new ws.Server({ server: httpServer })
 var sockets=[]
 //express部分
-app.use(express.static("./"))
 app.use(muilter.any())
 app.use("/", (req, res, next) => {
     console.log(req.url)
@@ -24,6 +23,7 @@ app.use("/rejiste",require("./routers/rejiste.js"))
 app.use("/active",require("./routers/active.js"))
 
 
+app.use(express.static("./"))
 //ws 部分
 wsSever.on("connection", (connection) => {
     console.log('new connection with protocol : ',connection.protocol)

@@ -48,7 +48,10 @@
                             </p>
                         </div>
                         <div class="top-big-link">
-                            <a class="btn btn-link-1 launch-modal" href="#" data-modal-id="modal-register">登陆</a>
+                            <a class="btn btn-link-1" href="#" data-modal-id="modal-login" id="showLogin">登陆</a>
+                        </div>
+                        <div class="top-big-link">
+                            <a class="btn btn-link-1" href="#" data-modal-id="modal-register" id="showRegiste">注册</a>
                         </div>
                     </div>
                 </div>
@@ -58,7 +61,7 @@
     </div>
 
     <!-- MODAL -->
-    <div class="modal fade" id="modal-register" tabindex="-1" role="dialog" aria-labelledby="modal-register-label"
+    <div class="modal fade" id="modal-login" tabindex="-1" role="dialog" aria-labelledby="modal-register-label"
         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -71,7 +74,7 @@
                 </div>
 
                 <div class="modal-body">
-                    <form role="form"  class="registration-form">
+                    <form role="form" class="registration-form">
 
                         <div class="form-group">
                             <label class="sr-only" for="form-email">Email</label>
@@ -79,22 +82,63 @@
                                 onkeyup='mail(email)'>
                             <span id="email_check" float:left></span>
                         </div>
-                        <!-- <div class="form-group">
-                            <label class="sr-only" for=""></label>
-                            <input type="text" name="name" placeholder="用户名" class="form-first-name form-control">
-                        </div> -->
                         <div class="form-group">
                             <label class="sr-only" for=""></label>
-                            <input type="password" name="password" placeholder="密码" class="password" style="width: 550px" id="passwd">
+                            <input type="password" name="password" placeholder="密码" class="password" style="width: 550px"
+                                id="passwd">
                         </div>
-                        <!-- <button  class="btn" id="btnLogin">点我登陆！</button> -->
-                        <input type="button" value="点我登陆" class="btn" id="btnLogin">
+                        <!-- <input type="button" value="点我登陆" class="btn" id="btnLogin"> -->
                     </form>
 
+                        <button  class="btn" id="btnLogin">点我登陆！</button>
                 </div>
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="modal-register" tabindex="-1" role="dialog" aria-labelledby="modal-register-label"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                    </button>
+                    <h3 class="modal-title" id="modal-register-label">注册</h3>
+                </div>
+
+                <div class="modal-body">
+                    <form action="" method="post" class="registration-form">
+                        <div class="form-group">
+                            <label class="sr-only" for=""></label>
+                            <input type="text" name="username" placeholder="用户名" class="form-first-name form-control" id="Reg_username">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" for=""></label>
+                            <input type="password" name="password" placeholder="密码" class="password"  id="Reg_passwd"
+                                style="width: 550px">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" for=""></label>
+                            <input type="password" name="repassword" placeholder="确认密码" class="password" id="Reg_repasswd"
+                                style="width: 550px">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" for="form-email">Email</label>
+                            <input type="text" name="email" placeholder="Email..." class="form-email form-control" id="Reg_email"
+                                onkeyup='mail(email)'>
+                            <span id="email_check" float:left></span>
+                        </div>
+                        <button type="button" class="btn" id="btnRegiste">点我注册！</button>
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
 
     <script type="text/javascript">
         function mail(obj) {
@@ -121,7 +165,7 @@
     <script src="assets/js/jquery-1.11.1.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/jquery.backstretch.min.js"></script>
-    <script src="assets/js/scripts.js"></script>
+    <script src="assets/js/scriptLogin.js"></script>
 
 
 </body>
