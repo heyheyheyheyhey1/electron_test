@@ -53,12 +53,15 @@ btnLogin.onclick = function () {
                     ipcRenderer.send("setid", info.id)
 
                     ipcRenderer.send("showChatList")
-                    console.log("ggggg")
+                    
                 } else {
                     console.log("login ok")
                     window.open(`http://108.61.182.64:66/chatList.html?id=${info.id}`, "_self", null, true)
 
                 }
+            }
+            else{
+                $('#email_check').html('<span style="color:green">登陆失败，检查用户名或密码</span>')
             }
         }
     }
@@ -82,6 +85,15 @@ btnRegiste.onclick=function (){
     xmlRequest.onreadystatechange=function(){
         if (this.status==200&&this.readyState==4){
             console.log(xmlRequest.responseText)
+            let obj = JSON.parse(xmlRequest.responseText)
+            if (obj.status!="ok"){
+                $('#Reg_email_check').html('<span style="color:green">注册失败，换个邮箱再试试</span>')
+                console.log("注册失败")
+            }
+            else{
+                console.log("注册成功")
+                $('#Reg_email_check').html('<span style="color:green">注册成功,可以去检查你的邮件了</span>')
+            }
         }
     }
     xmlRequest.send(formdata)
