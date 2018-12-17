@@ -15,7 +15,7 @@ if (isInBrowser) {
     }
 } else {
     const ipcRender = nodeRequire('electron').ipcRenderer
-    myid=ipcRender.sendSync("getid")
+    myid = ipcRender.sendSync("getid")
 }
 
 //获取和设置用户信息
@@ -116,7 +116,7 @@ for (let i = 0; i < 50; i++) {
 $("#btnAddTarget").click(function () {
     let xmlRequest = new XMLHttpRequest()
     let currentTarget = $("#currentTargetInput").val()
-    xmlRequest.open("GET", `http://127.0.0.1:66/searchUser?email=${currentTarget}`, true)
+    xmlRequest.open("GET", `http://127.0.0.1:66/searchUser?filter=${currentTarget}`, true)
     xmlRequest.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
 
@@ -126,7 +126,7 @@ $("#btnAddTarget").click(function () {
     xmlRequest.send(null)
 })
 
-//通过id获取用户信息
+//通过id获取用户信息,阻塞方法
 function getUserInfoById(arg) {
     let xmlRequest = new XMLHttpRequest()
     xmlRequest.open("GET", `http://127.0.0.1:66/getinfo?id=${arg}`, false)
@@ -148,7 +148,17 @@ function addToChatList(arg) {
     $("#currentTargetInput").val("")
     arg = JSON.parse(arg)
 
-    if (targets[arg.id] != undefined || arg.id == myid) return
+    if (targets[arg.id] != undefined || arg.id == myid || arg.status == "failed") return
+    if (arg.type == "room") {
+        
+        ws.send(JSON.stringify({
+            senderid: myid,
+            msgType: "joinroom",
+            data: "",
+            targetid:arg.id
+        }))
+    }
+
     let chatList = document.getElementById("chatList")
     //创建a标签
     el_a = document.createElement("a")
@@ -158,7 +168,6 @@ function addToChatList(arg) {
         if (targetid == arg.id) return
         targetid = arg.id
         document.getElementById("chattingName").innerHTML = `${arg.username}`
-
         refreshMsgList(arg)
     }
     //创建span标签    
@@ -211,11 +220,11 @@ function parseMsgToItem(msg) {
         el_p.innerHTML = msgRecv.data
     } else {
         console.log(msgRecv.originalname.split(".")[1])
-        if (["jpg", "jpeg", "png", "gif", "JPG", "JPEG", "PNG", "GIF"].indexOf(msgRecv.originalname.split(".")[1])!=-1) {
+        if (["jpg", "jpeg", "png", "gif", "JPG", "JPEG", "PNG", "GIF"].indexOf(msgRecv.originalname.split(".")[1]) != -1) {
             console.log("recv img")
             let el_img = document.createElement("img")
-            el_img.style="height:90px;width:60px"
-            el_img.src=msgRecv.fileDest
+            el_img.style = "height:90px;width:60px"
+            el_img.src = msgRecv.fileDest
             el_p.appendChild(el_img)
         } else {
             console.log("recv file")

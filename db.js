@@ -98,6 +98,19 @@ function createInactiveUser(arg) {
     })
 }
 
+
+function searchRoom(arg){
+    return new Promise((res,rej)=>{
+        db.query(`select * from rooms where id = '${arg}'`,(err,data)=>{
+            if (err ){
+                rej("不存在")
+            }
+            else {
+                res(data)
+            }
+        })
+    })
+}
 // exports.createMsgView = createMsgView
 // exports.getMsgView = getMsgView
 // exports.insertMsg = insertMsg
@@ -107,3 +120,4 @@ exports.createUser = createUser
 exports.createInactiveUser = createInactiveUser
 exports.updateUser = updateUser
 exports.deleteActived = deleteActived
+exports.searchRoom=searchRoom
