@@ -12,7 +12,7 @@ function createWindowLogin() {
   win_login = new BrowserWindow({ width: 1350, height: 950 })
   // 然后加载应用的 index.html。
   win_login.loadFile('login.html')
-  win_login.webContents.openDevTools()
+  // win_login.webContents.openDevTools()
   // 当 window 被关闭，这个事件会被触发。
   win_login.on('closed', () => {
     // 取消引用 window 对象，如果你的应用支持多窗口的话，
