@@ -15,12 +15,21 @@ const transport = nodemailer.createTransport({
 
 
 router.use((req, resp) => {
-    db.createUser(req.body)
+
+    db.searchUser("email", req.body.email)
+        .then((arg) => { //检查是否存在
+            return new Promise((res, rej) => {
+                if (arg.length != 0) rej("存在该用户")
+                else res(req.body)
+            })
+        })
+        .then(db.createInactiveUser)
         .then(() => {
             return new Promise((res, rej) => {
                 let hexString = crypto.createHash("md5")
                 hexString.update(req.body.email + ":" + req.body.passwd)
-                let s = `<a href=\"http://127.0.0.1:66/active?email=${req.body.email}&hex=${hexString.digest(req.body.email + ":" + req.body.passwd)}">点击此处激活</a>`
+                let s = `<a href=\"http://127.0.0.1:66/active?email=${req.body.email}&hex=${hexString.digest('hex')}">点击此处激活</a>`
+                console.log("Create hash OK")
                 res({
                     target: req.body.email,
                     html: s
@@ -40,7 +49,10 @@ router.use((req, resp) => {
                 info: err
             })
         })
+
 })
+
+
 
 function sendActiveMail(arg) {
     return new Promise((res, rej) => {

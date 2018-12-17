@@ -67,5 +67,22 @@ btnLogin.onclick = function () {
 
 
 btnRegiste.onclick=function (){
-    
+    console.log("registe clicked")
+    let email=$("#Reg_email").val()
+    let passwd=$("#Reg_passwd").val()
+    let repasswd=$("#Reg_repasswd").val()
+    let username=$("#Reg_username").val()
+    console.log(email,passwd,repasswd,username)
+    let xmlRequest=new XMLHttpRequest()
+    let formdata=new FormData()
+    formdata.append("username",username)
+    formdata.append("passwd",passwd)
+    formdata.append("email",email)
+    xmlRequest.open("POST","http://127.0.0.1:66/registe",true)
+    xmlRequest.onreadystatechange=function(){
+        if (this.status==200&&this.readyState==4){
+            console.log(xmlRequest.responseText)
+        }
+    }
+    xmlRequest.send(formdata)
 }

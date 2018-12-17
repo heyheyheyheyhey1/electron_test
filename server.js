@@ -19,10 +19,8 @@ app.use("/uploadFiles", require("./routers/uploadFiles.js"))
 app.use("/login",require("./routers/login.js"))
 app.use("/getinfo",require("./routers/getinfo.js"))
 app.use("/searchUser",require("./routers/searchUser.js"))
-app.use("/rejiste",require("./routers/rejiste.js"))
+app.use("/registe",require("./routers/registe.js"))
 app.use("/active",require("./routers/active.js"))
-
-
 app.use(express.static("./"))
 //ws 部分
 wsSever.on("connection", (connection) => {

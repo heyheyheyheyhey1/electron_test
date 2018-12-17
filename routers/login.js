@@ -5,7 +5,7 @@ router.use((req,res)=>{
     if (req.query!=undefined||req.query!=""){
         db.searchUser("email",req.query.email)
         .then((arg)=>{
-            if(arg.length>0&&req.query.passwd==arg[0].passwd&&arg[0].isactive==1){
+            if(arg.length>0&&req.query.passwd==arg[0].passwd){
                 res.send({
                     status:"ok",
                     id:arg[0].id,

@@ -10,7 +10,7 @@ const db = mysql.createPool({
 function searchUser(filter, arg) {
     return new Promise((res, rej) => {
         db.query(`select * from users where ${filter}  = '${arg}'`, (err, data) => {
-            if (err) rej(err)
+            if (err) rej("")
             else res(data)
         })
     })
@@ -44,6 +44,7 @@ function createMsgView(user) {
 }
 
 function createUser(user) {
+    console.log("creating ", user)
     return new Promise((res, rej) => {
         db.query(`insert into users (username,email,isactive,passwd) values("${user.username}","${user.email}","${0}","${user.passwd}")`, (err, data) => {
             if (err) rej("已经被注册")
@@ -63,8 +64,46 @@ function updateUser(filter, filterArg, targetFilter, targetFilterArg) {
     })
 }
 
-exports.createMsgView = createMsgView
-exports.getMsgView = getMsgView
-exports.insertMsg = insertMsg
+
+
+function serachInactiveUser(filter, arg) {
+    return new Promise((res, rej) => {
+        db.query(`select * from inactive where ${filter}  = '${arg}'`, (err, data) => {
+            if (err) rej(err)
+            else res(data)
+        })
+    })
+}
+
+function deleteActived(arg) {
+    return new Promise((res, rej) => {
+        db.query(`delete from inactive where email = "${arg.email}"`, (err, data) => {
+            if (err) rej(err)
+            else res(arg)
+        })
+    })
+}
+
+function createInactiveUser(arg) {
+    return new Promise((res, rej) => {
+        console.log("createInactiveUser", arg)
+        db.query(`insert into inactive (username,email,passwd) values("${arg.username}","${arg.email}","${arg.passwd}")`, (err, data) => {
+
+            if (err) {
+                console.log(err)
+                rej("已经被注册")
+            }
+            else res("ok")
+        })
+    })
+}
+
+// exports.createMsgView = createMsgView
+// exports.getMsgView = getMsgView
+// exports.insertMsg = insertMsg
 exports.searchUser = searchUser
+exports.serachInactiveUser = serachInactiveUser
 exports.createUser = createUser
+exports.createInactiveUser = createInactiveUser
+exports.updateUser = updateUser
+exports.deleteActived = deleteActived
