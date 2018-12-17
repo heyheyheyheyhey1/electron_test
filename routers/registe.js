@@ -28,7 +28,7 @@ router.use((req, resp) => {
             return new Promise((res, rej) => {
                 let hexString = crypto.createHash("md5")
                 hexString.update(req.body.email + ":" + req.body.passwd)
-                let s = `<a href=\"http://127.0.0.1:66/active?email=${req.body.email}&hex=${hexString.digest('hex')}">点击此处激活</a>`
+                let s = `<a href=\"http://108.61.182.64:66/active?email=${req.body.email}&hex=${hexString.digest('hex')}">点击此处激活</a>`
                 console.log("Create hash OK")
                 res({
                     target: req.body.email,

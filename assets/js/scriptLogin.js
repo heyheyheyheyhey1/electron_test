@@ -40,7 +40,7 @@ let btnRegiste = document.getElementById("btnRegiste")
 btnLogin.onclick = function () {
     let xmlRequest = new XMLHttpRequest()
     console.log("email: ", email.value, "passwd: ", passwd.value)
-    xmlRequest.open("GET", `http://127.0.0.1:66/login?email=${email.value}&passwd=${passwd.value}`, true)
+    xmlRequest.open("GET", `http://108.61.182.64:66/login?email=${email.value}&passwd=${passwd.value}`, true)
     xmlRequest.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
             console.log(xmlRequest.responseText)
@@ -56,7 +56,7 @@ btnLogin.onclick = function () {
                     console.log("ggggg")
                 } else {
                     console.log("login ok")
-                    window.open(`http://127.0.0.1:66/chatList.html?id=${info.id}`, "_self", null, true)
+                    window.open(`http://108.61.182.64:66/chatList.html?id=${info.id}`, "_self", null, true)
 
                 }
             }
@@ -78,7 +78,7 @@ btnRegiste.onclick=function (){
     formdata.append("username",username)
     formdata.append("passwd",passwd)
     formdata.append("email",email)
-    xmlRequest.open("POST","http://127.0.0.1:66/registe",true)
+    xmlRequest.open("POST","http://108.61.182.64:66/registe",true)
     xmlRequest.onreadystatechange=function(){
         if (this.status==200&&this.readyState==4){
             console.log(xmlRequest.responseText)

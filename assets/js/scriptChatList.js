@@ -21,7 +21,7 @@ if (isInBrowser) {
 //获取和设置用户信息
 (function () {
     let xmlRequest = new XMLHttpRequest()
-    xmlRequest.open("GET", `http://127.0.0.1:66/getinfo?id=${myid}`, true)
+    xmlRequest.open("GET", `http://108.61.182.64:66/getinfo?id=${myid}`, true)
     xmlRequest.onreadystatechange = function () {
         if (this.status == 200 && this.readyState == 4) {
             console.log("get info success ", xmlRequest.responseText)
@@ -79,7 +79,7 @@ function uploadFile(el) {
 
     //构建xmlHttpRequest
     let xmlHttpRequest = new XMLHttpRequest()
-    xmlHttpRequest.open("POST", "http://127.0.0.1:66/uploadFiles", true)
+    xmlHttpRequest.open("POST", "http://108.61.182.64:66/uploadFiles", true)
     xmlHttpRequest.onreadystatechange = function () {
         //判断返回值
         if (this.readyState == 4 && this.status == 200) {
@@ -116,7 +116,7 @@ for (let i = 0; i < 50; i++) {
 $("#btnAddTarget").click(function () {
     let xmlRequest = new XMLHttpRequest()
     let currentTarget = $("#currentTargetInput").val()
-    xmlRequest.open("GET", `http://127.0.0.1:66/searchUser?filter=${currentTarget}`, true)
+    xmlRequest.open("GET", `http://108.61.182.64:66/searchUser?filter=${currentTarget}`, true)
     xmlRequest.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
 
@@ -129,7 +129,7 @@ $("#btnAddTarget").click(function () {
 //通过id获取用户信息,阻塞方法
 function getUserInfoById(arg) {
     let xmlRequest = new XMLHttpRequest()
-    xmlRequest.open("GET", `http://127.0.0.1:66/getinfo?id=${arg}`, false)
+    xmlRequest.open("GET", `http://108.61.182.64:66/getinfo?id=${arg}`, false)
     xmlRequest.onreadystatechange = function () {
         if (this.status == 200 && this.readyState == 4) {
             console.log("get info success ", xmlRequest.responseText)
@@ -260,7 +260,7 @@ function parseMsgToItem(msg) {
 
 
 //websocket处理部分
-let ws = new WebSocket("ws://127.0.0.1:66", [myid])
+let ws = new WebSocket("ws://108.61.182.64:66", [myid])
 
 ws.onmessage = function (msg) {
     console.log("receive", msg.data)
