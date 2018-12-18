@@ -9,7 +9,8 @@ let myid = -1
 
 function createWindowLogin() {
   // 创建浏览器窗口。
-  win_login = new BrowserWindow({ width: 1350, height: 950 })
+  win_login = new BrowserWindow({ width: 1200, height: 900 })
+  win_login.setMenu(null)
   // 然后加载应用的 index.html。
   win_login.loadFile('login.html')
   // win_login.webContents.openDevTools()
