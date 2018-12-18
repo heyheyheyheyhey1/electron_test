@@ -5,7 +5,7 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "pack_linux":"electron-packager . simpleChatRoom --linux --out ../ --arch=x64 --app-version=1.0.0 --electron-version=3.0.10 --overwrite",
+    "pack_linux":"electron-packager . simpleChatRoom --linux --out ../ --arch=x64 --app-version=1.0.0 --electron-version=3.0.10 --overwrite &&  tar zcvf ../simpleChatRoom.tar.gz ../simpleChatRoom-linux-x64/* ",
     "pack_win":"electron-packager . simpleChatRoom --win --out ../ --arch=x64 --app-version=1.0.0 --electron-version=3.0.10 "
   },
   "author": "",
